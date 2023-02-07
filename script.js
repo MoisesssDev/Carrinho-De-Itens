@@ -9,65 +9,58 @@ class Carrinho {
 
   //   MOSTRA CARRINHO______________________________________________________
   mostrarItens() {
-    console.log("_".repeat(60));
-    console.log("Itens no carrinho:");
-    for (let i = 0; i < this.itens.length; i++) {
-      console.log(
-        `Nome: ${this.itens[i].nome}, Quantidade: ${this.itens[i].quantidade}, Preço: ${this.itens[i].preco}`
-      );
-    }
+    // retorna todos os this da class
+    return this;
   }
 
   //   ADICIONAR PRODUTO__________________________________________________
-  adicionarProduto(nome, quantidade, preco) {
-    // Verifica se o produto já está no carrinho
-    // Usa o find para pesquisar no array se o produto ja esta no carrinho
-    let itemExistente = this.itens.find((item) => item.nome === nome);
-
+  adicionarProduto(sku, nome, quantidade, preco) {
     // Validação de dados de entrada
     if (!nome || !quantidade || !preco) {
       console.log(
-        "Por favor forneça todos os dados do produto (nome, quantidade e preço)"
+        "Por favor forneça todos os dados do produto (código SKU , nome, quantidade e preço)"
       );
       return;
     }
+
+    // Verifica se o produto já está no carrinho
+    // Usa o find para pesquisar no array se o produto ja esta no carrinho
+    let itemExistente = this.itens.find((item) => item.nome === nome);
 
     if (itemExistente) {
       // Se o produto já está no carrinho, atualiza a quantidade
       itemExistente.quantidade += quantidade;
     } else {
       // Se não, adiciona um novo item ao carrinho
-      let item = {};
-      item.nome = nome;
-      item.quantidade = quantidade;
-      item.preco = preco;
+      let item = {
+        sku,
+        nome,
+        quantidade,
+        preco,
+      };
+
       this.itens.push(item);
     }
 
-    this.atualizarTotais();
-    console.log(this.mostrarItens());
-    console.log(`Subtotal: ${meuCarrinho.subtotal}`);
-    console.log(`Total: ${meuCarrinho.total}`);
+    this.atualizarTotal();
+    // console.log(this.mostrarItens());
   }
 
   //   REMOVER PRODUTO_______________________________________________________
-  removerProduto(nome) {
+  removerProduto(sku) {
     let novosItens = [];
     for (let i = 0; i < this.itens.length; i++) {
-      if (this.itens[i].nome !== nome) {
+      if (this.itens[i].sku !== sku) {
         novosItens.push(this.itens[i]);
       }
     }
     this.itens = novosItens;
 
-    this.atualizarTotais();
-    console.log(this.mostrarItens());
-    console.log(`Subtotal: ${meuCarrinho.subtotal}`);
-    console.log(`Total: ${meuCarrinho.total}`);
+    this.atualizarTotal();
   }
 
   //   CALCULO DO TOTAL______________________________________________________
-  atualizarTotais() {
+  atualizarTotal() {
     // Calcula o subtotal
     this.subtotal = this.itens.reduce((acumulador, item) => {
       return acumulador + item.preco * item.quantidade;
@@ -83,9 +76,9 @@ class Carrinho {
 let meuCarrinho = new Carrinho();
 
 // Adicionar alguns produtos ao carrinho
-meuCarrinho.adicionarProduto("Celular", 2, 1000);
-meuCarrinho.adicionarProduto("Notebook", 1, 2500);
-meuCarrinho.adicionarProduto("Tablet", 3, 800);
+// meuCarrinho.adicionarProduto(122312, "Celular", 2, 1000);
+// meuCarrinho.adicionarProduto(132131, "Notebook", 1, 2500);
+// meuCarrinho.adicionarProduto(167357, "Tablet", 3, 800);
 
 // Remover um produto do carrinho
-meuCarrinho.removerProduto("Notebook");
+// meuCarrinho.removerProduto(167357);
